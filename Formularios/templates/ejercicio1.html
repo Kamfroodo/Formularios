@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Ejercicio 1 - Formulario de Notas</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="content">
+        <h2>Formulario de Notas</h2>
+
+        {% if error %}
+            <p class="error-msg">⚠️ {{ error }}</p>
+        {% endif %}
+
+        <form method="POST" action="{{ url_for('ejercicio1') }}">
+
+            <div class="form-group">
+                <label for="nota1">Nota 1:</label>
+                <input type="number" step="0.01" min="10.0" max="70.0" id="nota1" name="nota1" required
+                       value="{{ request.form['nota1'] if request.method == 'POST' else '' }}">
+            </div>
+
+            <div class="form-group">
+                <label for="nota2">Nota 2:</label>
+                <input type="number" step="0.01" min="10.0" max="70.0" id="nota2" name="nota2" required
+                       value="{{ request.form['nota2'] if request.method == 'POST' else '' }}">
+            </div>
+
+            <div class="form-group">
+                <label for="nota3">Nota 3:</label>
+                <input type="number" step="0.01" min="10.0" max="70.0" id="nota3" name="nota3" required
+                       value="{{ request.form['nota3'] if request.method == 'POST' else '' }}">
+            </div>
+
+            <div class="form-group">
+                <label for="asistencia">Asistencia (%):</label>
+                <input type="number" min="0" max="100" id="asistencia" name="asistencia" required
+                       value="{{ request.form['asistencia'] if request.method == 'POST' else '' }}">
+            </div>
+
+            <button type="submit" class="btn-submit">Enviar</button>
+        </form>
+
+        {# Mostrar resultados solo si existen y no hay errores #}
+        {% if resultado_estado and not error %}
+            <div class="result-display">
+                <p>{{ promedio_final }}</p>
+                <p class="result-text {{ resultado_estado.lower() }}">{{ resultado_estado }}</p>
+            </div>
+        {% endif %}
+
+        {# El enlace para volver al menú principal lo mantendremos fuera del formulario #}
+        <a href="{{ url_for('index') }}" class="back-link">← Volver al Menú Principal</a>
+    </div>
+</body>
+</html>
